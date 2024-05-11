@@ -1,13 +1,17 @@
 import { TitledBlock } from "$/shared/ui/global/TitledBlock";
+
 import { ChooseButtons } from "./ChooseButtons/ChooseButtons";
 
 import { CurrencyColumnList } from "./CurrencyColumnList/CurrencyColumnList";
 import { CurrencyRowList } from "./CurrencyRowList/CurrencyRowList";
 
-interface Props {
-  title: string;
+export interface SettingsProps {
   currencyType: "bank" | "crypto";
   changingProperty: "getting" | "sending";
+}
+
+interface Props extends SettingsProps {
+  title: string;
 }
 
 export const ChooseCurrency = ({
@@ -21,8 +25,14 @@ export const ChooseCurrency = ({
         changingProperty={changingProperty}
         currencyType={currencyType}
       />
-      <CurrencyRowList property={currencyType} />
-      <CurrencyColumnList property={currencyType} />
+      <CurrencyRowList
+        currencyType={currencyType}
+        changingProperty={changingProperty}
+      />
+      <CurrencyColumnList
+        currencyType={currencyType}
+        changingProperty={changingProperty}
+      />
     </TitledBlock>
   );
 };
