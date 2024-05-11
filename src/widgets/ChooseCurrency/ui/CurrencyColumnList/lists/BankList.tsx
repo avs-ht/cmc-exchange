@@ -8,8 +8,12 @@ import clsx from "$/shared/helpers/clsx";
 import useCurrencyStore from "$/shared/storage/currency";
 import LoadingScreen from "$/shared/ui/global/LoadingScreen";
 import ScrollableList from "$/shared/ui/other/ScrollList";
+import { SettingsProps } from "../../ChooseCurrency";
 
-export const BankList = () => {
+export const BankList = ({
+  changingProperty,
+}: Omit<SettingsProps, "currencyType">) => {
+  console.log(changingProperty);
   const { data, isLoading } = useQuery({
     queryKey: ["banks"],
     queryFn: currencyAPI.getBanks,
