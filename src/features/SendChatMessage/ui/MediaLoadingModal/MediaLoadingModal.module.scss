@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  .info {
+    flex-grow: 1;
+  }
+  svg {
+    height: 100%;
+    aspect-ratio: 1/1;
+  }
+}
+.window {
+  width: min(380px, 100%);
+}

@@ -6,6 +6,7 @@ import { validateInputFile } from "../lib/validation";
 import { orderAPI } from "$/shared/api/order";
 import { ErrorModal } from "$/shared/ui/modals/ErrorModal";
 import styles from "./SendChatMessage.module.scss";
+import { MediaLoadingModal } from "./MediaLoadingModal/MediaLoadingModal";
 
 const LIGHTGRAY = "var(--lightgray-color)";
 const GRAY = "var(--gray-color)";
@@ -18,6 +19,7 @@ export const SendChatMessage = () => {
   const [errorText, setErrorText] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [isImageLoaded, setImageLoaded] = useState(false);
+  const [loadedFile, setLoadedFile] = useState<File | null>(null);
 
   const { mutate: sendMessageToServer } = useMutation({
     mutationKey: ["sendMessage"],
@@ -29,16 +31,6 @@ export const SendChatMessage = () => {
     },
     onError: () => {
       queryClient.invalidateQueries({
-        queryKey: ["messages"],
-      });
-    },
-  });
-
-  const { mutate: sendImageToServer } = useMutation({
-    mutationKey: ["sendImage"],
-    mutationFn: orderAPI.sendImageMessage,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
         queryKey: ["messages"],
       });
     },
@@ -79,7 +71,12 @@ export const SendChatMessage = () => {
               accept="image/jpg, image/png, image/gif, image/jpeg, video/mp4, video/mov, video/avi"
               ref={imageInputRef}
               onChange={(e) => {
-                const isRightFile = validateInputFile(e.target.files?.[0]);
+                const file = e.target.files?.[0];
+                if (!file) {
+                  return;
+                }
+
+                const isRightFile = validateInputFile(file);
                 if (!isRightFile) {
                   setErrorText(
                     "Доступны расширения jpg, jpeg, png, gif, mp4, mov, avi"
@@ -87,16 +84,14 @@ export const SendChatMessage = () => {
                   return;
                 }
 
-                const sizeOfVideo =
+                const sizeOfFile =
                   (e.target.files?.[0].size || 0) / 1024 / 1024;
-
-                if (sizeOfVideo > 5) {
-                  setErrorText("Размер видео не должен превышать 5 МБ");
+                if (sizeOfFile > 50) {
+                  setErrorText("Размер видео не должен превышать 50 МБ");
                   return;
                 }
 
-                sendImageToServer(e.target.files![0]);
-                imageInputRef.current!.value = "";
+                setLoadedFile(file);
               }}
             />
             <svg
@@ -162,6 +157,12 @@ export const SendChatMessage = () => {
           text={errorText}
           closeFunction={() => setErrorText("")}
           useMyFunction
+        />
+      )}
+      {loadedFile && (
+        <MediaLoadingModal
+          closeFunction={() => setLoadedFile(null)}
+          file={loadedFile}
         />
       )}
     </div>
