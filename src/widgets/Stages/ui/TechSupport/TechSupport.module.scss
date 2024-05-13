@@ -12,7 +12,10 @@
     font-weight: bold !important;
     width: 100%;
   }
+  img {
+    border-radius: 50%;
+  }
   &:has(a:hover) {
-    box-shadow: 0 0 8px 0 #7dbd42;
+    box-shadow: 0 0 8px 0 var(--accentColor);
   }
 }

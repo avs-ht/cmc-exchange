@@ -11,7 +11,7 @@
 
   .stage {
     min-height: var(--status-bar-height);
-    color: var(--darkgray-color);
+    color: var(--textColor);
     display: flex;
     align-items: center;
     padding-left: calc(var(--status-bar-width) + 12px);

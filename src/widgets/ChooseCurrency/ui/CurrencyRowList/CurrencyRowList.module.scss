@@ -15,9 +15,9 @@
   border: 1px solid #fff;
   border-radius: 6px;
   &.active {
-    -webkit-text-fill-color: var(--darkgray-color);
+    -webkit-text-fill-color: var(--textColor);
     opacity: 1;
-    color: var(--darkgray-color);
+    color: var(--textColor);
     border-color: var(--accentColor);
 
     & > button {
@@ -26,8 +26,8 @@
   }
   &:hover {
     opacity: 1;
-    -webkit-text-fill-color: var(--darkgray-color);
-    color: var(--darkgray-color);
+    -webkit-text-fill-color: var(--textColor);
+    color: var(---textColor);
     border-color: var(--accentColor);
   }
 }

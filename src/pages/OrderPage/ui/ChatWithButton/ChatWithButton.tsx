@@ -21,22 +21,23 @@ export const ChatWithButton = ({ children }: Props) => {
     <div className={containerName}>
       {!isChatOpened ? (
         <>
-          <div className={styles.left}>{children}</div>
-          {!isChatHide ? (
-            <Chat />
-          ) : (
-            <>
-              <div className={styles.chatButtonContainer}>
-                <Button
-                  onClick={() => setIsChatOpened(true)}
-                  className={styles.chatButton}
-                  data-amount="1"
-                >
-                  Открыть чат
-                </Button>
-              </div>
-            </>
-          )}
+          <div className={styles.left}>
+            {children}
+            {isChatHide && (
+              <>
+                <div className={styles.chatButtonContainer}>
+                  <Button
+                    onClick={() => setIsChatOpened(true)}
+                    className={styles.chatButton}
+                    data-amount="1"
+                  >
+                    Открыть чат
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
+          {!isChatHide && <Chat />}
         </>
       ) : (
         <div className={styles.chatContainer}>

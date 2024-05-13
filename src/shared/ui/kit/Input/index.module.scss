@@ -5,7 +5,7 @@
   .input {
     width: 100%;
     padding: 18.5px 16px;
-    background-color: #fff;
+    background-color: var(--uiKitBackgroundColor);
     border-radius: 12px;
     border: 1px solid var(--uiKitBorderColor);
     font-weight: 500;
@@ -17,7 +17,7 @@
     }
     &::placeholder {
       font-weight: normal;
-      color: #a9abad;
+      color: var(--secondaryTextColor) !important;
     }
   }
   .inputContainer {
@@ -70,7 +70,7 @@
       margin-bottom: 12px;
     }
     .input {
-      background-color: var(--whitesmoke-color);
+      background-color: var(--uiKitBackgroundColor);
     }
   }
 }

@@ -4,6 +4,12 @@
   grid-template-columns: 7fr 10fr;
   gap: 24px;
   padding-block: clamp(1.25rem, 9.877vw - 1.404rem, 6.25rem);
+  > * {
+    place-self: center;
+    @media (max-width: 1024px) {
+      place-self: auto;
+    }
+  }
   .left {
     gap: 24px;
     display: flex;

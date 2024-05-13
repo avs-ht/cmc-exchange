@@ -31,7 +31,7 @@ export const OrderPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const state = data?.state;
+  let state = "PENDING";
   useEffect(() => {
     setStage(state || "");
     setCrypto(data?.order.to.name || "");
@@ -52,7 +52,7 @@ export const OrderPage = () => {
     return <LoadingScreen>Создаем заказ</LoadingScreen>;
   }
 
-  if (state === "PENDING" || state === "WRONG" || 1 + 1 === 2) {
+  if (state === "PENDING" || state === "WRONG") {
     return <WaitingPage state={state} isLoading={isLoading} />;
   }
 
