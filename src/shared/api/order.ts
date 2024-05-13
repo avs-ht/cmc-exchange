@@ -10,14 +10,6 @@ class OrderAPI {
     this.apiUrl = apiUrl;
   }
 
-  private convertToBase64 = (file: File) =>
-    new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-
   private getHash = () => {
     return getCookieValue("order_hash") || "";
   };
@@ -82,13 +74,11 @@ class OrderAPI {
     return await axios.request(config);
   };
 
-  sendImageMessage = async (image: File) => {
+  sendImageMessage = async (base64Img: string) => {
     const data = new FormData();
     data.append("order_hash", this.getHash());
 
-    const base64Img = await this.convertToBase64(image);
     data.append("image", base64Img);
-    localStorage.setItem("image", base64Img);
 
     const config = this.createConfig(
       `${this.apiUrl}/order/message/send_image`,
@@ -105,6 +95,10 @@ class OrderAPI {
     const config = this.createConfig(`${this.apiUrl}/order/continue`, data);
 
     return await axios.request(config);
+  };
+
+  getAPILink = () => {
+    return `${this.apiUrl}/order`;
   };
 }
 
