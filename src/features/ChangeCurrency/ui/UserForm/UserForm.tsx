@@ -20,8 +20,9 @@ import Checkbox from "$/shared/ui/kit/Checkbox";
 import Input from "$/shared/ui/kit/Input";
 import Select from "$/shared/ui/kit/Select";
 import styles from "./UserForm.module.scss";
+import { SetupWidgetEnv } from "./SetupWidgetEnv";
 
-const FormSchema = z.object({
+export const FormSchema = z.object({
   fullName: z
     .string({ required_error: "Это поле обязательное" })
     .min(1, { message: "Это поле обязательное" }),
@@ -123,7 +124,7 @@ export const UserForm = () => {
       item_id: itemId,
       price: bestPrice,
     };
-    console.log(newOrder);
+
     if (1 + 1 === 3) createOrder(newOrder);
   };
   const [chainDefaultValue, setChainDefaultValue] = useState("");
@@ -134,6 +135,10 @@ export const UserForm = () => {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmitHandler)}>
+      <SetupWidgetEnv
+        setValue={setValue}
+        setChainDefaultValue={(value) => setChainDefaultValue(value)}
+      />
       <ErrorCodeModal errorCode={error.code} errorText={error.message} />
       <h3 className={styles.title}>Ваши реквизиты</h3>
       <div className={styles.inputs}>

@@ -7,7 +7,7 @@ export const CurrencyColumnList = ({
   changingProperty,
 }: SettingsProps) =>
   currencyType === "crypto" ? (
-    <CryptoList changingProperty={changingProperty} />
+    <CryptoList />
   ) : (
     <BankList changingProperty={changingProperty} />
   );

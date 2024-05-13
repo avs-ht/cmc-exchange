@@ -8,22 +8,24 @@ import clsx from "$/shared/helpers/clsx";
 import useCurrencyStore from "$/shared/storage/currency";
 import LoadingScreen from "$/shared/ui/global/LoadingScreen";
 import ScrollableList from "$/shared/ui/other/ScrollList";
-import { SettingsProps } from "../../ChooseCurrency";
+import { useWidgetEnv } from "$/pages/Root/model/widgetEnv";
+import { useEffect } from "react";
 
-export const CryptoList = ({
-  changingProperty,
-}: Omit<SettingsProps, "currencyType">) => {
-  console.log(changingProperty);
+export const CryptoList = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["crypto"],
     queryFn: currencyAPI.getCryptoTokens,
     select: (data) => data.data.methods,
   });
-
+  const { token } = useWidgetEnv((state) => state.widgetEnv);
   const cryptoCurrency = useCurrencyStore((state) => state.cryptoCurrency);
   const setCryptoCurrency = useCurrencyStore(
     (state) => state.setCryptoCurrency
   );
+  useEffect(() => {
+    if (!token) return;
+    setCryptoCurrency(token);
+  }, [token]);
 
   return (
     <ScrollableList>

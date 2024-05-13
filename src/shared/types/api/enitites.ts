@@ -97,12 +97,26 @@ export interface Messages {
   avatar: string;
   messages: Message[];
 }
+
+export interface ColorScheme {
+  accentColor: string | null;
+  secondaryAccentColor: string | null;
+  textColor: string | null;
+  secondaryTextColor: string | null;
+  bodyColor: string | null;
+  blockColor: string | null;
+  contrastColor: string | null;
+  buttonHoverColor: string | null;
+  buttonDisabledColor: string | null;
+  uiKitBackgroundColor: string | null;
+  uiKitBorderColor: string | null;
+}
 export interface WidgetEnv {
   token: string | null;
   chain: string | null;
   address: string | null;
   full_name: string | null;
   email: string | null;
-  color_palette: Record<string, string> | null;
+  color_palette: ColorScheme;
   payment_method: string[] | null;
 }

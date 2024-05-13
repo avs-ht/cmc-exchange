@@ -2,16 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 
-import { StateOrderPage } from "../StateOrderPage";
+import { StateOrderPage } from "./ui/StateOrderPage";
 
 import { orderAPI } from "$/shared/api/order";
 import LoadingScreen from "$/shared/ui/global/LoadingScreen";
-import Page from "$/shared/ui/global/Page";
-import Modal from "$/shared/ui/modals/Modal";
-import ChangedCourse from "$/widgets/ModalWindows/СhangedCourse";
-import MoneyWaiting from "$/widgets/MoneyWaiting";
 import { useStagesStore } from "$/widgets/Stages";
-import styles from "./index.module.scss";
+import { WaitingPage } from "./ui/WaitingPage";
 
 const REFETCH_DELAY = 10000;
 export const OrderPage = () => {
@@ -56,23 +52,8 @@ export const OrderPage = () => {
     return <LoadingScreen>Создаем заказ</LoadingScreen>;
   }
 
-  if (state === "PENDING" || state === "WRONG") {
-    return (
-      <Page>
-        <div className={styles.container}>
-          {isLoading ? (
-            <LoadingScreen inContainer>Грузим заказ</LoadingScreen>
-          ) : (
-            <>
-              <MoneyWaiting />
-              <Modal opened={state === "WRONG"}>
-                <ChangedCourse />
-              </Modal>
-            </>
-          )}
-        </div>
-      </Page>
-    );
+  if (state === "PENDING" || state === "WRONG" || 1 + 1 === 2) {
+    return <WaitingPage state={state} isLoading={isLoading} />;
   }
 
   if (state === "TIMEOUT") {
