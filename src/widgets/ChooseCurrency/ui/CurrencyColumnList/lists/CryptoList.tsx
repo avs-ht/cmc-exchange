@@ -17,7 +17,7 @@ interface Props {
 export const CryptoList = ({ changingProperty }: Props) => {
   const { data: fromMethods, isLoading: isFromLoading } = useQuery({
     queryKey: ["toValues"],
-    queryFn: currencyAPI.getToValues,
+    queryFn: currencyAPI.getFromValues,
     select: (data) => data.data.methods,
   });
   const { data: toMethods, isLoading: isToLoading } = useQuery({

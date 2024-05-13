@@ -1,6 +1,5 @@
 import axios from "axios";
 import { WidgetEnv } from "../../../shared/types/api/enitites";
-import getCookieValue from "$/shared/helpers/getCookie";
 
 class WidgetAPI {
   private apiUrl: string;
@@ -10,9 +9,14 @@ class WidgetAPI {
 
   async getWidgetEnv(widgetId: string) {
     const body = new FormData();
+    const config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${this.apiUrl}/widget_settings`,
+      data: body,
+    };
     body.append("widget_hash", widgetId);
-    body.append("order_hash", getCookieValue("order_hash") || "");
-    return await axios.get<WidgetEnv>(`${this.apiUrl}/widget_settings`);
+    return await axios.request<WidgetEnv>(config);
   }
 }
 
