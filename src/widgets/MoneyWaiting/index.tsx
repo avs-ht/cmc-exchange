@@ -35,15 +35,15 @@ const MoneyWaiting = () => {
     select: (data) => data.data,
   });
 
-  const { data: cryptoData } = useQuery({
-    queryKey: ["crypto"],
-    queryFn: currencyAPI.getCryptoTokens,
+  const { data: toValues } = useQuery({
+    queryKey: ["toValues"],
+    queryFn: currencyAPI.getToValues,
     select: (data) => data.data.methods,
   });
 
-  const { data: banksData } = useQuery({
-    queryKey: ["banks"],
-    queryFn: currencyAPI.getBanks,
+  const { data: fromValues } = useQuery({
+    queryKey: ["fromValues"],
+    queryFn: currencyAPI.getFromValues,
     select: (data) => data.data.methods,
   });
 
@@ -61,8 +61,10 @@ const MoneyWaiting = () => {
     mutationFn: orderAPI.payOrder,
   });
 
-  const token = cryptoData?.find((token) => token.id == data?.order.to.id);
-  const bank = banksData
+  const token = toValues?.crypto?.find(
+    (token) => token.id == data?.order.to.id
+  );
+  const bank = fromValues?.fiat
     ?.find((bank) => bank.id == data?.order.from.currency)
     ?.payment_methods.find(
       (bank) => String(bank.id) === String(data?.order.from.id)
@@ -78,7 +80,7 @@ const MoneyWaiting = () => {
     });
   };
 
-  const bankGet = banksData
+  const bankGet = fromValues?.fiat
     ?.find((bank) => bank.id == data?.order.from.currency)
     ?.payment_methods.find(
       (bank) => String(bank.id) === String(data?.state_data.terms?.payment_type)
@@ -94,7 +96,7 @@ const MoneyWaiting = () => {
           <div className={styles.firstPlace}>
             <div className={styles.icon}>
               <CurrencyIcon
-                currencyName={bank?.bank_name || ""}
+                currencyName={bank?.name || ""}
                 imageUrl={bank?.logo || ""}
                 width={16}
               />
@@ -134,7 +136,7 @@ const MoneyWaiting = () => {
               />
             </div>
             <div className={styles.infoBlockValue}>
-              {bankGet?.bank_name || "Альфа-банк"}
+              {bankGet?.name || "Альфа-банк"}
             </div>
           </div>
         </div>

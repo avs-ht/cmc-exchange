@@ -6,17 +6,30 @@ import { currencyAPI } from "$/shared/api/currency";
 import clsx from "$/shared/helpers/clsx";
 import useCurrencyStore from "$/shared/storage/currency";
 
-export const BankList = () => {
-  const { data } = useQuery({
-    queryKey: ["banks"],
-    queryFn: currencyAPI.getBanks,
+interface Props {
+  changingProperty: "sending" | "getting";
+}
+
+export const BankList = ({ changingProperty }: Props) => {
+  const { data: fromMethods } = useQuery({
+    queryKey: ["fromValues"],
+    queryFn: currencyAPI.getFromValues,
+    select: (data) => data.data.methods,
   });
 
-  const currencyItems = data?.data.methods;
+  const { data: toMethods } = useQuery({
+    queryKey: ["fromValues"],
+    queryFn: currencyAPI.getFromValues,
+    select: (data) => data.data.methods,
+  });
 
   const setCurrencyType = useCurrencyStore(
     (state) => state.setBankCurrencyType
   );
+
+  const currencyItems =
+    changingProperty === "sending" ? fromMethods?.fiat : toMethods?.fiat;
+
   const currencyType = useCurrencyStore((state) => state.bankCurrencyType);
 
   return (

@@ -13,20 +13,30 @@ import { SettingsProps } from "../../ChooseCurrency";
 export const BankList = ({
   changingProperty,
 }: Omit<SettingsProps, "currencyType">) => {
-  console.log(changingProperty);
-  const { data, isLoading } = useQuery({
-    queryKey: ["banks"],
-    queryFn: currencyAPI.getBanks,
+  const { data: fromMethods, isLoading: isFromLoading } = useQuery({
+    queryKey: ["fromValues"],
+    queryFn: currencyAPI.getFromValues,
+    select: (data) => data.data.methods,
   });
+  const { data: toMethods, isLoading: isToLoading } = useQuery({
+    queryKey: ["toValues"],
+    queryFn: currencyAPI.getToValues,
+    select: (data) => data.data.methods,
+  });
+
   const bankCurrencyType = useCurrencyStore((state) => state.bankCurrencyType);
   const bankCurrency = useCurrencyStore((state) => state.bankCurrency);
   const setBankCurrency = useCurrencyStore((state) => state.setBankCurrency);
 
+  const currency =
+    changingProperty === "sending" ? fromMethods?.fiat : toMethods?.fiat;
+  const isLoading =
+    changingProperty === "sending" ? isFromLoading : isToLoading;
+
   const banks =
     bankCurrencyType === "all"
-      ? data?.data.methods.map((bank) => bank.payment_methods).flat()
-      : data?.data.methods.find((bank) => bank.id === bankCurrencyType)
-          ?.payment_methods;
+      ? currency?.map((bank) => bank.payment_methods).flat()
+      : currency?.find((bank) => bank.id === bankCurrencyType)?.payment_methods;
 
   return (
     <ScrollableList>
@@ -42,7 +52,7 @@ export const BankList = ({
             );
             return (
               <div key={bank.id} className={className}>
-                <CurrencyItem name={bank.bank_name} image={bank.logo} />
+                <CurrencyItem name={bank.name} image={bank.logo} />
                 <button
                   className={styles.itemButton}
                   onClick={() => setBankCurrency(String(bank.id))}

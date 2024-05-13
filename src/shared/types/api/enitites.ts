@@ -1,29 +1,37 @@
-interface IdTemplate {
+export interface Crypto {
   id: string;
   name: string;
+  chains: Chain[];
+  logo: string;
+  exchange_from: number[];
+}
+
+export interface Fiat {
+  id: string;
+  name: string;
+  payment_methods: PaymentMethod[];
 }
 
 export interface PaymentMethod {
   id: string;
-  bank_name: string;
+  name: string;
   logo: string;
-}
-export interface Currency extends IdTemplate {
-  payment_methods: PaymentMethod[];
+  exchange_to: number[];
 }
 
-export interface Chain extends IdTemplate {
+export interface Chain {
+  id: string;
+  name: string;
   withdraw_commission: number;
 }
-
-export interface Token extends IdTemplate {
-  chains: Chain[];
-  withdraw_commission: number;
-  payment_methods: PaymentMethod[];
-  crypto: boolean;
-  logo: string;
+export interface Methods {
+  fiat: Fiat[];
+  crypto: Crypto[];
 }
 
+export interface Values {
+  methods: Methods;
+}
 export interface PriceExchange {
   price: number;
   amount: number;
@@ -32,7 +40,6 @@ export interface PriceExchange {
   best_p2p: string;
   best_p2p_price: number;
 }
-
 // Order
 export interface OrderHash {
   order_hash: string;

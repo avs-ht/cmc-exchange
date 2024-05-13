@@ -11,12 +11,26 @@ import ScrollableList from "$/shared/ui/other/ScrollList";
 import { useWidgetEnv } from "$/pages/Root/model/widgetEnv";
 import { useEffect } from "react";
 
-export const CryptoList = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["crypto"],
-    queryFn: currencyAPI.getCryptoTokens,
+interface Props {
+  changingProperty: "sending" | "getting";
+}
+export const CryptoList = ({ changingProperty }: Props) => {
+  const { data: fromMethods, isLoading: isFromLoading } = useQuery({
+    queryKey: ["toValues"],
+    queryFn: currencyAPI.getToValues,
     select: (data) => data.data.methods,
   });
+  const { data: toMethods, isLoading: isToLoading } = useQuery({
+    queryKey: ["toValues"],
+    queryFn: currencyAPI.getToValues,
+    select: (data) => data.data.methods,
+  });
+
+  const currency =
+    changingProperty === "sending" ? fromMethods?.crypto : toMethods?.crypto;
+  const isLoading =
+    changingProperty === "sending" ? isFromLoading : isToLoading;
+
   const { token } = useWidgetEnv((state) => state.widgetEnv);
   const cryptoCurrency = useCurrencyStore((state) => state.cryptoCurrency);
   const setCryptoCurrency = useCurrencyStore(
@@ -26,14 +40,13 @@ export const CryptoList = () => {
     if (!token) return;
     setCryptoCurrency(token);
   }, [token]);
-
   return (
     <ScrollableList>
       {isLoading ? (
         <LoadingScreen inContainer>Грузим криптовалюты</LoadingScreen>
       ) : (
         <div className={styles.list}>
-          {data?.map((token) => {
+          {currency?.map((token) => {
             const className = clsx(
               styles.listItem,
               { [styles.active]: `${cryptoCurrency}` === `${token.id}` },

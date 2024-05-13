@@ -41,14 +41,14 @@ export const ChangeInputs = () => {
   const [profit, setProfit] = useState(0);
   const [errorCode, setErrorCode] = useState(-1);
 
-  const cryptoData = useQuery({
-    queryKey: ["crypto"],
-    queryFn: currencyAPI.getCryptoTokens,
+  const { data: toValues } = useQuery({
+    queryKey: ["toValues"],
+    queryFn: currencyAPI.getToValues,
     select: (data) => data.data.methods,
   });
-  const banksData = useQuery({
-    queryKey: ["banks"],
-    queryFn: currencyAPI.getBanks,
+  const { data: fromValues } = useQuery({
+    queryKey: ["fromValues"],
+    queryFn: currencyAPI.getFromValues,
     select: (data) => data.data.methods,
   });
 
@@ -190,7 +190,7 @@ export const ChangeInputs = () => {
       (tokenError as AxiosError<{ code: number }>)?.response?.data.code;
 
     // 2 - can't price
-    // 3 - zero input
+    // 3 - zero input_
     if (errorCode === 2) resetData(2);
 
     if (errorCode === 3) resetData(3);
@@ -207,14 +207,15 @@ export const ChangeInputs = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromSettingCurrency]);
 
-  const token = cryptoData.data?.find((token) => token.id == cryptoCurrency);
-  const bank = banksData.data
+  const token = toValues?.crypto.find((token) => token.id == cryptoCurrency);
+  const bank = fromValues?.fiat
     ?.find((currency) => {
       return currency.id === bankCurrencyType || bankCurrencyType === "all";
     })
     ?.payment_methods.find((bank) => `${bank.id}` === bankCurrency);
 
-  const isInputDisabled = !token || !bank || !chain;
+  const isInputDisabled = !token || !bank;
+  console.log(token, bank, chain);
   const currency = bankCurrencyType === "all" ? "RUB" : bankCurrencyType;
   const isUpdateButtonVisible =
     !isInputDisabled && firstInputAmount && !secondInputChanging;
@@ -274,7 +275,7 @@ export const ChangeInputs = () => {
           iconUrl={
             fromSettingCurrency === "bank" ? bank?.logo : token?.logo || ""
           }
-          iconAlt={bank?.bank_name || ""}
+          iconAlt={bank?.name || ""}
         />
         <Input
           value={secondInputChanging ? "Рассчитываем..." : secondInputAmount}

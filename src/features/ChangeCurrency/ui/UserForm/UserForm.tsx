@@ -45,15 +45,18 @@ export const FormSchema = z.object({
 });
 
 export const UserForm = () => {
-  const { data } = useQuery({
-    queryKey: ["crypto"],
-    queryFn: currencyAPI.getCryptoTokens,
+  const { data: toValues } = useQuery({
+    queryKey: ["toValues"],
+    queryFn: currencyAPI.getToValues,
     select: (data) => data.data.methods,
   });
   const bankCurrency = useCurrencyStore((state) => state.bankCurrency);
   const cryptoCurrency = useCurrencyStore((state) => state.cryptoCurrency);
+
   const chains =
-    data?.find((chain) => chain.id === cryptoCurrency)?.chains || [];
+    toValues?.crypto.find(
+      (chain) => String(chain.id) === String(cryptoCurrency)
+    )?.chains || [];
   const [error, setErrorCode] = useState<{ code: number; message: string }>({
     code: -1,
     message: "",
@@ -130,6 +133,7 @@ export const UserForm = () => {
   const [chainDefaultValue, setChainDefaultValue] = useState("");
   useEffect(() => {
     setChainDefaultValue(chains[0]?.name);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cryptoCurrency]);
 
