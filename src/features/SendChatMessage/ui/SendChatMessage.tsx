@@ -80,14 +80,23 @@ export const SendChatMessage = () => {
               ref={imageInputRef}
               onChange={(e) => {
                 const isRightFile = validateInputFile(e.target.files?.[0]);
-                if (isRightFile) {
-                  sendImageToServer(e.target.files![0]);
-                  imageInputRef.current!.value = "";
-                } else {
+                if (!isRightFile) {
                   setErrorText(
                     "Доступны расширения jpg, jpeg, png, gif, mp4, mov, avi"
                   );
+                  return;
                 }
+
+                const sizeOfVideo =
+                  (e.target.files?.[0].size || 0) / 1024 / 1024;
+
+                if (sizeOfVideo > 5) {
+                  setErrorText("Размер видео не должен превышать 5 МБ");
+                  return;
+                }
+
+                sendImageToServer(e.target.files![0]);
+                imageInputRef.current!.value = "";
               }}
             />
             <svg

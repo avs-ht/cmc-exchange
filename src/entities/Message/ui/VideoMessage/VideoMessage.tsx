@@ -14,8 +14,8 @@ export const VideoMessage = ({ base64 }: { base64: string }) => {
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <circle cx="12" cy="12" r="10" />
-        <polygon points="10 8 16 12 10 16 10 8" />
+        <circle cx="12" cy="12" r="10" fill="#fff" />
+        <polygon points="10 8 16 12 10 16 10 8" fill="var(--accentColor)" />
       </svg>
     </div>
   );
