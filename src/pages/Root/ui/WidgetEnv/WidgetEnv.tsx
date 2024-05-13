@@ -14,17 +14,17 @@ export const WidgetEnv = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (!isSuccess) return;
 
-    const { color_palette: colorScheme1, ...widgetEnvWithoutColors } = data;
+    const { color_palette: colorScheme, ...widgetEnvWithoutColors } = data;
 
     setWidgetEnv(widgetEnvWithoutColors);
-    const colorScheme = {
-      bodyColor: "green",
-      blockColor: "pink",
-      textColor: "#DE87",
-      secondaryTextColor: "beige",
-      accentColor: "red",
-      secondaryAccentColor: "orange",
-    };
+    // const colorScheme = {
+    //   bodyColor: "green",
+    //   blockColor: "pink",
+    //   textColor: "#DE87",
+    //   secondaryTextColor: "beige",
+    //   accentColor: "red",
+    //   secondaryAccentColor: "orange",
+    // };
     if (!colorScheme) return;
 
     const bodyCSS = getComputedStyle(document.body);

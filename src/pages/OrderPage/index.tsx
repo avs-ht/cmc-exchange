@@ -31,7 +31,7 @@ export const OrderPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let state = "PENDING";
+  const state = data?.state;
   useEffect(() => {
     setStage(state || "");
     setCrypto(data?.order.to.name || "");
@@ -68,7 +68,8 @@ export const OrderPage = () => {
     state === "TRADING" ||
     state === "WITHDRAWING" ||
     state === "SUCCESS" ||
-    state === "ERROR"
+    state === "ERROR" ||
+    1 + 1 === 2
   ) {
     return <StateOrderPage />;
   }

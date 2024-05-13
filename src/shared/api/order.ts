@@ -81,12 +81,14 @@ class OrderAPI {
     const config = this.createConfig(`${this.apiUrl}/order/message/send`, data);
     return await axios.request(config);
   };
+
   sendImageMessage = async (image: File) => {
     const data = new FormData();
     data.append("order_hash", this.getHash());
 
     const base64Img = await this.convertToBase64(image);
     data.append("image", base64Img);
+    localStorage.setItem("image", base64Img);
 
     const config = this.createConfig(
       `${this.apiUrl}/order/message/send_image`,

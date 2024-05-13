@@ -9,6 +9,7 @@ import { CurrencyIcon } from "$/shared/ui/other/CurrencyIcon";
 import styles from "./Message.module.scss";
 import { OpenedImage } from "./OpenedImage/OpenedImage";
 import userIcon from "./images/user.svg";
+import { VideoMessage } from "./VideoMessage/VideoMessage";
 
 interface Props {
   message: MessageType;
@@ -22,6 +23,8 @@ export const Message = ({ message }: Props) => {
     { [styles.support]: isSupport },
     []
   );
+
+  const isVideo = message.image?.includes("data:video");
 
   return (
     <div className={messageContainerClassName}>
@@ -49,18 +52,24 @@ export const Message = ({ message }: Props) => {
             message.text
           ) : (
             <button
+              className={styles.mediaButton}
               onClick={() => {
                 setOpenedImage({
                   url: formatBase64Url(message.image),
                   name: message.nick_name[0],
                   datetime: message.dt,
+                  isVideo: isVideo,
                 });
               }}
             >
-              <img
-                className={styles.messageImage}
-                src={formatBase64Url(message.image)}
-              />
+              {isVideo ? (
+                <VideoMessage base64={message.image} />
+              ) : (
+                <img
+                  className={styles.messageImage}
+                  src={formatBase64Url(message.image)}
+                />
+              )}
             </button>
           )}
         </p>
@@ -71,6 +80,7 @@ export const Message = ({ message }: Props) => {
           name={openedImage?.name || ""}
           datetime={openedImage?.datetime || ""}
           resetImageUrl={() => setOpenedImage(undefined)}
+          isVideo={isVideo}
         />
       </Modal>
     </div>
