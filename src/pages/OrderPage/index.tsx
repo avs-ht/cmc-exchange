@@ -56,12 +56,6 @@ export const OrderPage = () => {
     return <WaitingPage state={state} isLoading={isLoading} />;
   }
 
-  if (state === "TIMEOUT") {
-    document.cookie =
-      "order_hash=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
-    navigate({ to: "/" });
-  }
-
   if (
     state === "RECEIVING" ||
     state === "BUYING" ||
@@ -74,6 +68,11 @@ export const OrderPage = () => {
     return <StateOrderPage />;
   }
 
+  if (state === "TIMEOUT") {
+    document.cookie =
+      "order_hash=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
+    navigate({ to: "/" });
+  }
   return (
     <>
       Необработанный статус: <b>{state || "статус отсутствует"}</b>

@@ -92,6 +92,8 @@ export const SendChatMessage = () => {
                 }
 
                 setLoadedFile(file);
+
+                inputRef.current!.value = "";
               }}
             />
             <svg

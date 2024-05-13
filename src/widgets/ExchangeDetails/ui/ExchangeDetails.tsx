@@ -80,7 +80,8 @@ export const ExchangeDetails = () => {
           <h3 className={styles.exchangeRateTitle}>
             <span className={styles.exchangeRateText}>Номер обмена</span>
             <span className={styles.exchangeRateValue}>
-              {BigInt(data?.order.order_hash || "").toString()}
+              {(data?.order.order_hash || "").toString().slice(0, 30)}
+              {(data?.order.order_hash || "").toString().length > 30 && "..."}
             </span>
           </h3>
         </div>

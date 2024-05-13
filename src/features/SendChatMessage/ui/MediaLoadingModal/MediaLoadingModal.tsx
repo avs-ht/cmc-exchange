@@ -38,16 +38,20 @@ export const MediaLoadingModal = ({ closeFunction, file }: Props) => {
       setStatus("loading");
       const formData = new FormData();
       const base64Url = await convertToBase64(file);
-      formData.append("file", base64Url);
+      formData.append("image", base64Url);
 
-      await axios.post(`${orderAPI.getAPILink()}/send_image`, formData, {
-        onUploadProgress(progressEvent) {
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / (progressEvent.total || 100)
-          );
-          setValue(percentCompleted);
-        },
-      });
+      await axios.post(
+        `${orderAPI.getAPILink()}/message/send_image`,
+        formData,
+        {
+          onUploadProgress(progressEvent) {
+            const percentCompleted = Math.round(
+              (progressEvent.loaded * 100) / (progressEvent.total || 100)
+            );
+            setValue(percentCompleted);
+          },
+        }
+      );
       setStatus("done");
       closeWindow();
     } catch (error) {
