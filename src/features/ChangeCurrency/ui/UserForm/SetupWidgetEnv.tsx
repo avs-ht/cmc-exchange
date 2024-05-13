@@ -1,4 +1,4 @@
-import { useWidgetEnv } from "$/pages/Root/model/widgetEnv";
+import { useWidgetEnv } from "$/pages/WidgetEnv/model/widgetEnv";
 import { z } from "zod";
 import { FormSchema } from "./UserForm";
 import { UseFormSetValue } from "react-hook-form";

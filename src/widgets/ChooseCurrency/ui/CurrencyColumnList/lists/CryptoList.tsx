@@ -8,7 +8,7 @@ import clsx from "$/shared/helpers/clsx";
 import useCurrencyStore from "$/shared/storage/currency";
 import LoadingScreen from "$/shared/ui/global/LoadingScreen";
 import ScrollableList from "$/shared/ui/other/ScrollList";
-import { useWidgetEnv } from "$/pages/Root/model/widgetEnv";
+import { useWidgetEnv } from "$/pages/WidgetEnv/model/widgetEnv";
 import { useEffect } from "react";
 
 interface Props {

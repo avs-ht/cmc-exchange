@@ -1,5 +1,6 @@
 import axios from "axios";
 import { WidgetEnv } from "../../../shared/types/api/enitites";
+import getCookieValue from "$/shared/helpers/getCookie";
 
 class WidgetAPI {
   private apiUrl: string;
@@ -7,7 +8,10 @@ class WidgetAPI {
     this.apiUrl = apiUrl;
   }
 
-  async getWidgetEnv() {
+  async getWidgetEnv(widgetId: string) {
+    const body = new FormData();
+    body.append("widget_hash", widgetId);
+    body.append("order_hash", getCookieValue("order_hash") || "");
     return await axios.get<WidgetEnv>(`${this.apiUrl}/widget_settings`);
   }
 }

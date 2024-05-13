@@ -71,7 +71,12 @@ export const OrderPage = () => {
   if (state === "TIMEOUT") {
     document.cookie =
       "order_hash=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
-    navigate({ to: "/" });
+    navigate({
+      to: "/$widgetId",
+      params: {
+        widgetId: JSON.stringify(localStorage.getItem("widgetId")),
+      },
+    });
   }
   return (
     <>

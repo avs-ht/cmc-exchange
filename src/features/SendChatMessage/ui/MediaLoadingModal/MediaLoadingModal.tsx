@@ -9,6 +9,7 @@ import { convertToBase64 } from "$/shared/helpers/convertToBase64";
 import { orderAPI } from "$/shared/api/order";
 import axios from "axios";
 import Button from "$/shared/ui/kit/Button/Button";
+import getCookieValue from "$/shared/helpers/getCookie";
 
 interface Props {
   closeFunction: () => void;
@@ -39,6 +40,7 @@ export const MediaLoadingModal = ({ closeFunction, file }: Props) => {
       const formData = new FormData();
       const base64Url = await convertToBase64(file);
       formData.append("image", base64Url);
+      formData.append("order_hash", getCookieValue("order_hash") || "");
 
       await axios.post(
         `${orderAPI.getAPILink()}/message/send_image`,

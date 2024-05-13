@@ -1,15 +1,24 @@
-import { widgetAPI } from "$/pages/Root/api/widget";
+import { widgetAPI } from "$/pages/WidgetEnv/api/widget";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useWidgetEnv } from "../../model/widgetEnv";
+import { useWidgetEnv } from "../model/widgetEnv";
 
-export const WidgetEnv = ({ children }: { children: React.ReactNode }) => {
+interface Props {
+  children: React.ReactNode;
+  widgetId: string;
+}
+
+export const WidgetEnv = ({ children, widgetId }: Props) => {
   const setWidgetEnv = useWidgetEnv((state) => state.setWidgetEnv);
-  const { data, isSuccess } = useQuery({
+  const { data, isSuccess, refetch } = useQuery({
     queryKey: ["widgetEnv"],
-    queryFn: widgetAPI.getWidgetEnv,
+    queryFn: () => widgetAPI.getWidgetEnv(widgetId),
     select: (data) => data.data,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [widgetId]);
 
   useEffect(() => {
     if (!isSuccess) return;

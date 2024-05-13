@@ -81,7 +81,12 @@ export const UserForm = () => {
     onSuccess: (data) => {
       const { order_hash } = data.data;
       document.cookie = `order_hash=${order_hash}`;
-      navigate({ to: "/order" });
+      navigate({
+        to: "/$widgetId/order",
+        params: {
+          widgetId: JSON.stringify(localStorage.getItem("widgetId")),
+        },
+      });
     },
     onError: (error: AxiosError<{ message: string; code: number }>) => {
       if (error.response) {
