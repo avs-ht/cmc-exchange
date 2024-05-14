@@ -15,8 +15,12 @@ interface Props {
   changingProperty: "sending" | "getting";
 }
 export const CryptoList = ({ changingProperty }: Props) => {
-  const { data: fromMethods, isLoading: isFromLoading } = useQuery({
-    queryKey: ["toValues"],
+  const {
+    data: fromMethods,
+    isLoading: isFromLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["fromValues"],
     queryFn: currencyAPI.getFromValues,
     select: (data) => data.data.methods,
   });
@@ -25,6 +29,10 @@ export const CryptoList = ({ changingProperty }: Props) => {
     queryFn: currencyAPI.getToValues,
     select: (data) => data.data.methods,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [changingProperty]);
 
   const currency =
     changingProperty === "sending" ? fromMethods?.crypto : toMethods?.crypto;

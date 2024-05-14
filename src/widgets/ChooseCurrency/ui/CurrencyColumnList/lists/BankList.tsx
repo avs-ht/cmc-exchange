@@ -9,6 +9,7 @@ import useCurrencyStore from "$/shared/storage/currency";
 import LoadingScreen from "$/shared/ui/global/LoadingScreen";
 import ScrollableList from "$/shared/ui/other/ScrollList";
 import { SettingsProps } from "../../ChooseCurrency";
+import { useEffect } from "react";
 
 export const BankList = ({
   changingProperty,
@@ -18,16 +19,25 @@ export const BankList = ({
     queryFn: currencyAPI.getFromValues,
     select: (data) => data.data.methods,
   });
-  const { data: toMethods, isLoading: isToLoading } = useQuery({
+  const {
+    data: toMethods,
+    isLoading: isToLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["toValues"],
     queryFn: currencyAPI.getToValues,
     select: (data) => data.data.methods,
   });
 
+  useEffect(() => {
+    refetch();
+  }, [changingProperty]);
+
   const bankCurrencyType = useCurrencyStore((state) => state.bankCurrencyType);
   const bankCurrency = useCurrencyStore((state) => state.bankCurrency);
   const setBankCurrency = useCurrencyStore((state) => state.setBankCurrency);
 
+  console.log(toMethods?.fiat);
   const currency =
     changingProperty === "sending" ? fromMethods?.fiat : toMethods?.fiat;
   const isLoading =
