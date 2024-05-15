@@ -15,6 +15,7 @@ interface Props {
   closeFunction: () => void;
   file: File;
 }
+const controller = new AbortController();
 const CLOSE_DELAY = 5000;
 export const MediaLoadingModal = ({ closeFunction, file }: Props) => {
   const fileName =
@@ -22,10 +23,10 @@ export const MediaLoadingModal = ({ closeFunction, file }: Props) => {
       ? file.name
       : `${file.name.slice(0, 10)} ... ${file.name.slice(file.name.lastIndexOf("."), file.name.length)}`;
 
-  const [value, setValue] = useState(0);
   const [status, setStatus] = useState<"done" | "error" | "loading">("loading");
 
   const timerRef = useRef<NodeJS.Timeout>();
+
   const closeWindow = () => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
@@ -46,12 +47,7 @@ export const MediaLoadingModal = ({ closeFunction, file }: Props) => {
         `${orderAPI.getAPILink()}/message/send_image`,
         formData,
         {
-          onUploadProgress(progressEvent) {
-            const percentCompleted = Math.round(
-              (progressEvent.loaded * 100) / (progressEvent.total || 100)
-            );
-            setValue(percentCompleted);
-          },
+          signal: controller.signal,
         }
       );
       setStatus("done");
@@ -94,11 +90,16 @@ export const MediaLoadingModal = ({ closeFunction, file }: Props) => {
                 <h2>{fileName}</h2>
                 <ProgressBar
                   color="var(--accentColor)"
-                  value={value}
                   className={styles.progress}
+                  mode="indeterminate"
                 />
               </div>
-              <button onClick={() => closeFunction()}>
+              <button
+                onClick={() => {
+                  controller.abort();
+                  closeFunction();
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -128,7 +129,14 @@ export const MediaLoadingModal = ({ closeFunction, file }: Props) => {
                   Окно закроется автоматически через {CLOSE_DELAY / 1000} сек.
                 </p>
               </div>
-              <Button onClick={closeFunction}>Закрыть окно</Button>
+              <Button
+                onClick={() => {
+                  clearTimeout(timerRef.current);
+                  closeFunction();
+                }}
+              >
+                Закрыть окно
+              </Button>
             </>
           )}
         </div>

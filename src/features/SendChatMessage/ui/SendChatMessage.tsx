@@ -11,6 +11,7 @@ import { MediaLoadingModal } from "./MediaLoadingModal/MediaLoadingModal";
 const LIGHTGRAY = "var(--lightgray-color)";
 const GRAY = "var(--gray-color)";
 
+const MAX_FILE_SIZE_MB = 75; // MB
 export const SendChatMessage = () => {
   const queryClient = useQueryClient();
   const focused = useRef(false);
@@ -86,14 +87,16 @@ export const SendChatMessage = () => {
 
                 const sizeOfFile =
                   (e.target.files?.[0].size || 0) / 1024 / 1024;
-                if (sizeOfFile > 50) {
-                  setErrorText("Размер видео не должен превышать 50 МБ");
+                if (sizeOfFile > MAX_FILE_SIZE_MB) {
+                  setErrorText(
+                    `Размер файла не должен превышать ${MAX_FILE_SIZE_MB} МБ`
+                  );
                   return;
                 }
 
                 setLoadedFile(file);
 
-                inputRef.current!.value = "";
+                imageInputRef.current!.value = "";
               }}
             />
             <svg
