@@ -5,6 +5,7 @@ import { orderAPI } from "$/shared/api/order";
 import { TitledBlock } from "$/shared/ui/global/TitledBlock";
 import { CurrencyIcon } from "$/shared/ui/other/CurrencyIcon";
 import styles from "./ExchangeDetails.module.scss";
+import { Arrow } from "./images/Arrow";
 
 export const ExchangeDetails = () => {
   const { data } = useQuery({
@@ -50,7 +51,7 @@ export const ExchangeDetails = () => {
               </span>
             </div>
           </div>
-          <div className={styles.dividerCurrency} />
+          <Arrow />
           <div className={styles.currency}>
             <h3 className={styles.currencyTitle}>Получаете</h3>
             <div className={styles.currencyInfo}>

@@ -62,8 +62,7 @@ export const OrderPage = () => {
     state === "TRADING" ||
     state === "WITHDRAWING" ||
     state === "SUCCESS" ||
-    state === "ERROR" ||
-    1 + 1 === 2
+    state === "ERROR"
   ) {
     return <StateOrderPage />;
   }

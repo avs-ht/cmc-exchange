@@ -11,13 +11,14 @@ import Button from "$/shared/ui/kit/Button/Button";
 import ButtonCancel from "$/shared/ui/kit/ButtonCancel/CancelButton";
 import Modal from "$/shared/ui/modals/Modal";
 import { CurrencyIcon } from "$/shared/ui/other/CurrencyIcon";
-import arrow from "./icons/arrow.svg";
+
 import styles from "./index.module.scss";
 import { Timer } from "./ui/Timer";
 import { CopyIcon } from "./icons/CopyIcon";
 import { UserIcon } from "./icons/UserIcon";
 import { CardIcon } from "./icons/CardIcon";
 import { BankIcon } from "./icons/BankIcon";
+import { Arrow } from "./icons/Arrow";
 
 const COPY_MESSAGE_DISAPPEAR_DELAY = 1500;
 
@@ -110,7 +111,7 @@ const MoneyWaiting = () => {
               {data?.order.amount || "---"} {data?.order.from.currency || ""}
             </h4>
           </div>
-          <img src={arrow} alt="" />
+          <Arrow />
           <div className={styles.secondPlace}>
             <div className={styles.icon}>
               <CurrencyIcon

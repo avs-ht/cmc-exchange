@@ -2,6 +2,7 @@ import { widgetAPI } from "$/pages/WidgetEnv/api/widget";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useWidgetEnv } from "../model/widgetEnv";
+import { TinyColor } from "@ctrl/tinycolor";
 
 interface Props {
   children: React.ReactNode;
@@ -38,9 +39,9 @@ export const WidgetEnv = ({ children, widgetId }: Props) => {
 
     const bodyCSS = getComputedStyle(document.body);
     for (const [colorName, color] of Object.entries(colorScheme)) {
-      const currValue = bodyCSS.getPropertyValue(`--${colorName}`);
+      const isVarExist = bodyCSS.getPropertyValue(`--${colorName}`);
 
-      if (!currValue || !color) return;
+      if (!isVarExist || !color || !new TinyColor(color).isValid) return;
 
       document.body.style.setProperty(`--${colorName}`, `${color}`);
     }
