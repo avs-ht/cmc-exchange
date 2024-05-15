@@ -5,6 +5,7 @@ import { orderAPI } from "$/shared/api/order";
 import Button from "$/shared/ui/kit/Button/Button";
 import icon from "./icon.svg";
 import styles from "./index.module.scss";
+import { clearOrderHash } from "$/shared/helpers/orderHash/clear";
 
 const SuccessOrder = () => {
   const { data } = useQuery({
@@ -57,9 +58,7 @@ const SuccessOrder = () => {
                   widgetId: JSON.stringify(localStorage.getItem("widgetId")),
                 },
               });
-
-              document.cookie =
-                "order_hash=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
+              clearOrderHash();
             }}
           >
             Вернуться к обменам

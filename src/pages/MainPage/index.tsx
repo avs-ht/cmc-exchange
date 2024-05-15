@@ -7,6 +7,7 @@ import styles from "./index.module.scss";
 export const MainPage = () => {
   const fromType = useExchangeSettings((state) => state.fromType);
   const toType = fromType === "crypto" ? "bank" : "crypto";
+
   return (
     <Page>
       <div className={styles.container}>

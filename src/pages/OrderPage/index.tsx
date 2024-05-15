@@ -8,6 +8,7 @@ import { orderAPI } from "$/shared/api/order";
 import LoadingScreen from "$/shared/ui/global/LoadingScreen";
 import { useStagesStore } from "$/widgets/Stages";
 import { WaitingPage } from "./ui/WaitingPage";
+import { clearOrderHash } from "$/shared/helpers/orderHash/clear";
 
 const REFETCH_DELAY = 10000;
 export const OrderPage = () => {
@@ -68,8 +69,7 @@ export const OrderPage = () => {
   }
 
   if (state === "TIMEOUT") {
-    document.cookie =
-      "order_hash=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
+    clearOrderHash();
     navigate({
       to: "/$widgetId",
       params: {

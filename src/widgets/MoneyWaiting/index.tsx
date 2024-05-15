@@ -19,6 +19,7 @@ import { UserIcon } from "./icons/UserIcon";
 import { CardIcon } from "./icons/CardIcon";
 import { BankIcon } from "./icons/BankIcon";
 import { Arrow } from "./icons/Arrow";
+import { clearOrderHash } from "$/shared/helpers/orderHash/clear";
 
 const COPY_MESSAGE_DISAPPEAR_DELAY = 1500;
 
@@ -52,8 +53,7 @@ const MoneyWaiting = () => {
     mutationKey: ["cancelPay"],
     mutationFn: orderAPI.cancelOrder,
     onSuccess: () => {
-      document.cookie =
-        "order_hash=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
+      clearOrderHash();
       navigate({
         to: "/$widgetId",
         params: {

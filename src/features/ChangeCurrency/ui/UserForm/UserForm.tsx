@@ -21,6 +21,7 @@ import Input from "$/shared/ui/kit/Input";
 import Select from "$/shared/ui/kit/Select";
 import styles from "./UserForm.module.scss";
 import { SetupWidgetEnv } from "./SetupWidgetEnv";
+import { setupOrderHash } from "$/shared/helpers/orderHash/setup";
 
 export const FormSchema = z.object({
   fullName: z
@@ -80,7 +81,8 @@ export const UserForm = () => {
     mutationFn: orderAPI.createOrder,
     onSuccess: (data) => {
       const { order_hash } = data.data;
-      document.cookie = `order_hash=${order_hash}`;
+      setupOrderHash(order_hash);
+
       navigate({
         to: "/$widgetId/order",
         params: {
