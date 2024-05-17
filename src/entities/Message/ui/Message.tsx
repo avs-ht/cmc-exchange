@@ -44,7 +44,7 @@ export const Message = ({ message }: Props) => {
         <div className={styles.messageHeader}>
           <h3 className={styles.nickName}>{message.nick_name}</h3>
           <span className={styles.time}>
-            {message.dt?.split(" ")[1].slice(0, -3)}
+            {message.dt?.split(" ")[1]?.slice(0, -3)}
           </span>
         </div>
         <p className={styles.messageText}>

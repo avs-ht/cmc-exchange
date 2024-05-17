@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import styles from "./index.module.scss";
+import { ErrorBoundary } from "$/pages/Root/ui/ErrorBoundary";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const queryClient = new QueryClient({
@@ -12,9 +13,11 @@ export const queryClient = new QueryClient({
 });
 const Wrapper = ({ children }: { children: React.ReactNode }) => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className={styles.wrapper}>{children}</div>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <div className={styles.wrapper}>{children}</div>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
 
