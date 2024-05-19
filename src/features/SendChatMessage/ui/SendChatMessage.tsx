@@ -79,7 +79,7 @@ export const SendChatMessage = () => {
 
                 const isRightFile = validateInputFile(file);
                 if (!isRightFile) {
-                  setErrorText("Доступны расширения jpeg, png, gmp4, pdf");
+                  setErrorText("Доступны расширения jpeg, png, mp4, pdf");
                   return;
                 }
 
