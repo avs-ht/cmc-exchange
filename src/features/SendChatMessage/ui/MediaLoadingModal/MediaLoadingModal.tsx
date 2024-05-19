@@ -10,6 +10,7 @@ import { orderAPI } from "$/shared/api/order";
 import axios from "axios";
 import Button from "$/shared/ui/kit/Button/Button";
 import getCookieValue from "$/shared/helpers/getCookie";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   closeFunction: () => void;
@@ -18,6 +19,7 @@ interface Props {
 const controller = new AbortController();
 const CLOSE_DELAY = 5000;
 export const MediaLoadingModal = ({ closeFunction, file }: Props) => {
+  const queryClient = useQueryClient();
   const fileName =
     file.name.length < 25
       ? file.name
@@ -51,6 +53,7 @@ export const MediaLoadingModal = ({ closeFunction, file }: Props) => {
         }
       );
       setStatus("done");
+      queryClient.refetchQueries({ queryKey: ["messages"] });
       closeWindow();
     } catch (error) {
       setStatus("error");

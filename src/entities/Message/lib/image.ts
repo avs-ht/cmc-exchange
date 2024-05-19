@@ -1,10 +1,8 @@
 import { getDateFromMessage } from "$/widgets/Chat/lib/message";
 
 export const generateImageName = (url: string) => {
-  const isVideo = url.includes("data:video/");
-  const extenstion = isVideo
-    ? url.match(/data:video\/(\w+);base64,.*$/)?.[1]
-    : url.match(/data:image\/(\w+);base64,.*$/)?.[1];
+  const matches = url.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,/);
+  const extenstion = matches ? matches[1].split("/")[1] : "";
   return `${(Math.random() + 1).toString(36).substring(7)}.${extenstion}`;
 };
 

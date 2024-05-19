@@ -5,11 +5,12 @@ import { formatBase64Url } from "../lib/base64";
 import clsx from "$/shared/helpers/clsx";
 import { Message as MessageType } from "$/shared/types/api/enitites";
 import Modal from "$/shared/ui/modals/Modal";
-import { CurrencyIcon } from "$/shared/ui/other/CurrencyIcon";
 import styles from "./Message.module.scss";
 import { OpenedImage } from "./OpenedImage/OpenedImage";
-import userIcon from "./images/user.svg";
-import { VideoMessage } from "./VideoMessage/VideoMessage";
+
+import { FileMessage } from "./chatMessages/FileMessage";
+import { UserIcon } from "./images/UserIcon";
+import { generateImageName } from "../lib/image";
 
 interface Props {
   message: MessageType;
@@ -24,18 +25,21 @@ export const Message = ({ message }: Props) => {
     []
   );
 
+  let documentType: "video" | "image" | "pdf" = "image";
   const isVideo = message.image?.includes("data:video");
+  const isPdf = message.image?.includes("data:application/pdf");
+
+  if (isVideo) {
+    documentType = "video";
+  } else if (isPdf) {
+    documentType = "pdf";
+  }
 
   return (
     <div className={messageContainerClassName}>
       <div className={styles.left}>
         {!isSupport ? (
-          <CurrencyIcon
-            currencyName={message.nick_name}
-            imageUrl={userIcon}
-            width={40}
-            dev
-          />
+          <UserIcon />
         ) : (
           <div className={styles.supportIcon}>T</div>
         )}
@@ -51,26 +55,35 @@ export const Message = ({ message }: Props) => {
           {!message.image ? (
             message.text
           ) : (
-            <button
-              className={styles.mediaButton}
-              onClick={() => {
-                setOpenedImage({
-                  url: formatBase64Url(message.image),
-                  name: message.nick_name[0],
-                  datetime: message.dt,
-                  isVideo: isVideo,
-                });
-              }}
-            >
-              {isVideo ? (
-                <VideoMessage base64={message.image} />
+            <>
+              {documentType === "pdf" ? (
+                <a
+                  className={styles.link}
+                  href={message.image}
+                  download={generateImageName(message.image)}
+                >
+                  <FileMessage
+                    url={message.image}
+                    documentType={documentType}
+                  />
+                </a>
               ) : (
-                <img
-                  className={styles.messageImage}
-                  src={formatBase64Url(message.image)}
-                />
+                <button
+                  onClick={() => {
+                    setOpenedImage({
+                      url: formatBase64Url(message.image),
+                      name: message.nick_name[0],
+                      datetime: message.dt,
+                    });
+                  }}
+                >
+                  <FileMessage
+                    url={message.image}
+                    documentType={documentType}
+                  />
+                </button>
               )}
-            </button>
+            </>
           )}
         </p>
       </div>
@@ -80,7 +93,7 @@ export const Message = ({ message }: Props) => {
           name={openedImage?.name || ""}
           datetime={openedImage?.datetime || ""}
           resetImageUrl={() => setOpenedImage(undefined)}
-          isVideo={isVideo}
+          documentType={documentType}
         />
       </Modal>
     </div>

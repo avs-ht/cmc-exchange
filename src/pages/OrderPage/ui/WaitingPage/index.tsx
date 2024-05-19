@@ -14,7 +14,7 @@ interface Props {
 export const WaitingPage = ({ isLoading, state }: Props) => {
   return (
     <Page>
-      <ChatWithButton>
+      <ChatWithButton maxContentWidth={519}>
         <div className={styles.container}>
           {isLoading ? (
             <LoadingScreen inContainer>Грузим заказ</LoadingScreen>

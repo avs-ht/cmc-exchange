@@ -11,12 +11,12 @@ import { MediaLoadingModal } from "./MediaLoadingModal/MediaLoadingModal";
 const LIGHTGRAY = "var(--lightgray-color)";
 const GRAY = "var(--gray-color)";
 
-const MAX_FILE_SIZE_MB = 75; // MB
+const MAX_FILE_SIZE_MB = 60; // MB
 export const SendChatMessage = () => {
   const queryClient = useQueryClient();
   const focused = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const imageInputRef = useRef<HTMLInputElement>(null);
+  const documentInputRef = useRef<HTMLInputElement>(null);
   const [errorText, setErrorText] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [isImageLoaded, setImageLoaded] = useState(false);
@@ -69,8 +69,8 @@ export const SendChatMessage = () => {
             <input
               className={styles.imageInput}
               type="file"
-              accept="image/jpg, image/png, image/gif, image/jpeg, video/mp4, video/mov, video/avi"
-              ref={imageInputRef}
+              accept="image/png, image/jpeg, video/mp4, application/pdf"
+              ref={documentInputRef}
               onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (!file) {
@@ -79,9 +79,7 @@ export const SendChatMessage = () => {
 
                 const isRightFile = validateInputFile(file);
                 if (!isRightFile) {
-                  setErrorText(
-                    "Доступны расширения jpg, jpeg, png, gif, mp4, mov, avi"
-                  );
+                  setErrorText("Доступны расширения jpeg, png, gmp4, pdf");
                   return;
                 }
 
@@ -96,7 +94,7 @@ export const SendChatMessage = () => {
 
                 setLoadedFile(file);
 
-                imageInputRef.current!.value = "";
+                documentInputRef.current!.value = "";
               }}
             />
             <svg

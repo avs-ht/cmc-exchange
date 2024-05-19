@@ -17,6 +17,7 @@
     @media (max-width: 1024px) {
       gap: 20px;
     }
+    align-items: stretch;
   }
 
   @media (max-width: 1024px) {
@@ -35,8 +36,10 @@
   > button {
     width: 100%;
   }
+  align-self: center;
   .chatButton {
     position: relative;
+
     &::after {
       content: attr(data-amount);
       position: absolute;

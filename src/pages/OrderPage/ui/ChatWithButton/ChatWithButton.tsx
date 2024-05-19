@@ -6,8 +6,9 @@ import Chat from "$/widgets/Chat";
 import Button from "$/shared/ui/kit/Button/Button";
 interface Props {
   children: React.ReactNode;
+  maxContentWidth?: number;
 }
-export const ChatWithButton = ({ children }: Props) => {
+export const ChatWithButton = ({ children, maxContentWidth }: Props) => {
   const { matching: isChatHide } = useMediaQuery("(max-width: 1024px)");
   const [isChatOpened, setIsChatOpened] = useState(false);
   const containerName = clsx(
@@ -25,7 +26,14 @@ export const ChatWithButton = ({ children }: Props) => {
             {children}
             {isChatHide && (
               <>
-                <div className={styles.chatButtonContainer}>
+                <div
+                  className={styles.chatButtonContainer}
+                  style={
+                    maxContentWidth
+                      ? { maxWidth: `${maxContentWidth}px`, width: "100%" }
+                      : undefined
+                  }
+                >
                   <Button
                     onClick={() => setIsChatOpened(true)}
                     className={styles.chatButton}

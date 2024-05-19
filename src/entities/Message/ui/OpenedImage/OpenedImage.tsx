@@ -1,27 +1,26 @@
 import { useEffect } from "react";
 
 import { generateDateForOpenedImage, generateImageName } from "../../lib/image";
-import userAvatar from "../images/user.svg";
 
 import Page from "$/shared/ui/global/Page";
-import { CurrencyIcon } from "$/shared/ui/other/CurrencyIcon";
 import styles from "./OpenedImage.module.scss";
 import closeIcon from "./images/close.svg";
 import downloadIcon from "./images/download.svg";
-import ReactPlayer from "react-player";
+import { OpenedDocument } from "./OpenedDocument";
+import { UserIcon } from "../images/UserIcon";
 
 export interface OpenedImage {
   url: string;
   name: string;
   datetime: string;
   isSupport?: boolean;
-  isVideo: boolean;
+  documentType?: "video" | "image" | "pdf";
 }
 export const OpenedImage = (
   props: OpenedImage & { resetImageUrl: () => void }
 ) => {
-  const { url, name, datetime, resetImageUrl, isSupport, isVideo } = props;
-  console.log(url);
+  const { url, name, datetime, resetImageUrl, isSupport, documentType } = props;
+
   const formattedDate = generateDateForOpenedImage(datetime);
   useEffect(() => {
     const closeImage = (e: KeyboardEvent) => {
@@ -44,12 +43,7 @@ export const OpenedImage = (
               {isSupport ? (
                 <div className={styles.supportIcon}>T</div>
               ) : (
-                <CurrencyIcon
-                  width={40}
-                  currencyName={name}
-                  imageUrl={userAvatar}
-                  dev
-                />
+                <UserIcon />
               )}
             </div>
             <div className={styles.senderInfo}>
@@ -58,24 +52,22 @@ export const OpenedImage = (
             </div>
           </div>
           <div className={styles.buttons}>
-            <a
-              className={styles.download}
-              href={url}
-              download={generateImageName(url)}
-            >
-              <img src={downloadIcon} alt="Скачать открытую фотографию" />
-            </a>
+            {documentType !== "pdf" && (
+              <a
+                className={styles.download}
+                href={url}
+                download={generateImageName(url)}
+              >
+                <img src={downloadIcon} alt="Скачать открытую фотографию" />
+              </a>
+            )}
             <button className={styles.close} onClick={resetImageUrl}>
               <img src={closeIcon} alt="Закрыть открытую фотографию" />
             </button>
           </div>
         </div>
         <div className={styles.body}>
-          {isVideo ? (
-            <ReactPlayer url={url} playing controls />
-          ) : (
-            <img src={url} alt={name} className={styles.image} />
-          )}
+          <OpenedDocument documentType={documentType || "image"} url={url} />
         </div>
       </div>
     </Page>
