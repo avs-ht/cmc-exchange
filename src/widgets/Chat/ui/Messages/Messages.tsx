@@ -38,7 +38,7 @@ export const Messages = () => {
   const messages = data?.messages.sort(
     (m1, m2) => getDateFromMessage(m1) - getDateFromMessage(m2)
   );
-  console.log(messages);
+  console.log([messages]);
   return (
     <ScrollableList listClassName={styles.messages}>
       {stage !== "ERROR" && (
