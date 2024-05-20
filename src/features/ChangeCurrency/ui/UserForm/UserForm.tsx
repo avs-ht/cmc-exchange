@@ -135,7 +135,7 @@ export const UserForm = () => {
       price: bestPrice,
     };
 
-    if (1 + 1 === 3) createOrder(newOrder);
+    createOrder(newOrder);
   };
   const [chainDefaultValue, setChainDefaultValue] = useState("");
   useEffect(() => {
