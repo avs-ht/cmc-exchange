@@ -19,7 +19,7 @@ export const BankList = ({ changingProperty }: Props) => {
 
   const { data: toMethods } = useQuery({
     queryKey: ["toValues"],
-    queryFn: currencyAPI.getFromValues,
+    queryFn: currencyAPI.getToValues,
     select: (data) => data.data.methods,
   });
 
