@@ -140,7 +140,6 @@ export const ChangeInputs = () => {
   }, [tokenData?.data]);
 
   useEffect(() => {
-    console.log(bankData);
     if (fromSettingCurrency === "bank") {
       {
         setFirstInputAmount(`${bankData?.data.amount || ""}`);
@@ -215,7 +214,7 @@ export const ChangeInputs = () => {
     ?.payment_methods.find((bank) => `${bank.id}` === bankCurrency);
 
   const isInputDisabled = !token || !bank;
-  console.log(token, bank, chain);
+
   const currency = bankCurrencyType === "all" ? "RUB" : bankCurrencyType;
   const isUpdateButtonVisible =
     !isInputDisabled && firstInputAmount && !secondInputChanging;

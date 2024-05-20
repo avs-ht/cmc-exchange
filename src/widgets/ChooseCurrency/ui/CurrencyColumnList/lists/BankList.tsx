@@ -37,7 +37,6 @@ export const BankList = ({
   const bankCurrency = useCurrencyStore((state) => state.bankCurrency);
   const setBankCurrency = useCurrencyStore((state) => state.setBankCurrency);
 
-  console.log(toMethods?.fiat);
   const currency =
     changingProperty === "sending" ? fromMethods?.fiat : toMethods?.fiat;
   const isLoading =
