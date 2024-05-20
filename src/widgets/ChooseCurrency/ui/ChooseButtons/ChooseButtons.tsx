@@ -12,6 +12,9 @@ interface Props {
 export const ChooseButtons = ({ changingProperty, currencyType }: Props) => {
   const setFromType = useExchangeSettings((state) => state.setFromType);
   const setBankCurrency = useCurrencyStore((state) => state.setBankCurrency);
+  const setBankCurrencyType = useCurrencyStore(
+    (state) => state.setBankCurrencyType
+  );
   const setCryptoCurrency = useCurrencyStore(
     (state) => state.setCryptoCurrency
   );
@@ -38,6 +41,7 @@ export const ChooseButtons = ({ changingProperty, currencyType }: Props) => {
   const resetCurrency = useCallback(() => {
     setBankCurrency("");
     setCryptoCurrency("");
+    setBankCurrencyType("all");
   }, []);
   return (
     <>

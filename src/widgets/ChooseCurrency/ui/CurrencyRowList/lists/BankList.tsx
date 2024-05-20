@@ -18,7 +18,7 @@ export const BankList = ({ changingProperty }: Props) => {
   });
 
   const { data: toMethods } = useQuery({
-    queryKey: ["fromValues"],
+    queryKey: ["toValues"],
     queryFn: currencyAPI.getFromValues,
     select: (data) => data.data.methods,
   });
@@ -33,35 +33,39 @@ export const BankList = ({ changingProperty }: Props) => {
   const currencyType = useCurrencyStore((state) => state.bankCurrencyType);
 
   return (
-    <ul className={styles.list}>
-      <li
-        className={clsx(
-          styles.listItem,
-          { [styles.active]: currencyType === "all" },
-          []
-        )}
-      >
-        <button onClick={() => setCurrencyType("all")}>Все</button>
-      </li>
-      {currencyItems?.map((currency) => {
-        const className = clsx(
-          styles.listItem,
-          {
-            [styles.active]: currency.id === currencyType,
-          },
-          []
-        );
-
-        const setCurrency = () => {
-          setCurrencyType(currency.id);
-        };
-
-        return (
-          <li key={currency.id} className={className}>
-            <button onClick={setCurrency}>{currency.name}</button>
+    <>
+      {currencyItems?.length !== 0 && (
+        <ul className={styles.list}>
+          <li
+            className={clsx(
+              styles.listItem,
+              { [styles.active]: currencyType === "all" },
+              []
+            )}
+          >
+            <button onClick={() => setCurrencyType("all")}>Все</button>
           </li>
-        );
-      })}
-    </ul>
+          {currencyItems?.map((currency) => {
+            const className = clsx(
+              styles.listItem,
+              {
+                [styles.active]: currency.id === currencyType,
+              },
+              []
+            );
+
+            const setCurrency = () => {
+              setCurrencyType(currency.id);
+            };
+
+            return (
+              <li key={currency.id} className={className}>
+                <button onClick={setCurrency}>{currency.name}</button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </>
   );
 };
