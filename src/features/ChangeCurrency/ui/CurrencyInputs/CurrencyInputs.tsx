@@ -158,6 +158,7 @@ export const ChangeInputs = () => {
     if (newErrorCode == 3 && amount === "0") {
       if (isFromGetting) setFromValue("0");
       else setToValue("0");
+      setAmount(0);
       setGetPricing(null);
       return;
     }
@@ -165,6 +166,7 @@ export const ChangeInputs = () => {
     setFromValue("0");
     setToValue("0");
     setHasError(true);
+    setAmount(0);
     setGetPricing(null);
   }, [error]);
 
