@@ -8,7 +8,7 @@ interface Props {
   children: React.ReactNode;
   maxContentWidth?: number;
 }
-export const ChatWithButton = ({ children, maxContentWidth }: Props) => {
+export const ChatWithButton = ({ children, maxContentWidth = 0 }: Props) => {
   const { matching: isChatHide } = useMediaQuery("(max-width: 1024px)");
   const [isChatOpened, setIsChatOpened] = useState(false);
   const containerName = clsx(
