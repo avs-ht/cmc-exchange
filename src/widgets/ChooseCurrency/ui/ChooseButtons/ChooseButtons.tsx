@@ -10,10 +10,11 @@ interface Props {
 }
 
 export const ChooseButtons = ({ changingProperty, currencyType }: Props) => {
+  const detail = changingProperty === "sending" ? "to" : "from";
   const setFromType = useExchangeSettings((state) => state.setFromType);
   const setToType = useExchangeSettings((state) => state.setToType);
-  const setFromCurrency = useCurrencyStore((state) => state.setBankCurrency);
-  const setToCurrency = useCurrencyStore((state) => state.setCryptoCurrency);
+  const setFromCurrency = useCurrencyStore((state) => state.setFromCurrency);
+  const setToCurrency = useCurrencyStore((state) => state.setToCurrency);
 
   const isCrypto = currencyType === "crypto";
   const bankClassName = clsx(
@@ -45,6 +46,10 @@ export const ChooseButtons = ({ changingProperty, currencyType }: Props) => {
           disabled={!isCrypto}
           onClick={() => {
             setCurrency("bank");
+            const resetInputValue = new CustomEvent("resetInputValue", {
+              detail,
+            });
+            dispatchEvent(resetInputValue);
           }}
         >
           Валюта
@@ -54,6 +59,10 @@ export const ChooseButtons = ({ changingProperty, currencyType }: Props) => {
           className={cryptoClassName}
           onClick={() => {
             setCurrency("crypto");
+            const resetInputValue = new CustomEvent("resetInputValue", {
+              detail,
+            });
+            dispatchEvent(resetInputValue);
           }}
         >
           Криптовалюта

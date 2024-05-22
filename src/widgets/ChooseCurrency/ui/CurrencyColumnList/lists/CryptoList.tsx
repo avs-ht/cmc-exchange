@@ -40,13 +40,11 @@ export const CryptoList = ({ changingProperty }: Props) => {
     changingProperty === "sending" ? isFromLoading : isToLoading;
 
   const { token } = useWidgetEnv((state) => state.widgetEnv);
-  const cryptoCurrency = useCurrencyStore((state) => state.cryptoCurrency);
-  const setCryptoCurrency = useCurrencyStore(
-    (state) => state.setCryptoCurrency
-  );
+  const toCurrency = useCurrencyStore((state) => state.toCurrency);
+  const setToCurrency = useCurrencyStore((state) => state.setToCurrency);
   useEffect(() => {
     if (!token) return;
-    setCryptoCurrency(token);
+    setToCurrency(token);
   }, [token]);
   return (
     <ScrollableList>
@@ -57,14 +55,14 @@ export const CryptoList = ({ changingProperty }: Props) => {
           {currency?.map((token) => {
             const className = clsx(
               styles.listItem,
-              { [styles.active]: `${cryptoCurrency}` === `${token.id}` },
+              { [styles.active]: `${toCurrency}` === `${token.id}` },
               []
             );
             return (
               <div key={token.id} className={className}>
                 <button
                   className={styles.itemButton}
-                  onClick={() => setCryptoCurrency(String(token.id))}
+                  onClick={() => setToCurrency(String(token.id))}
                 ></button>
                 <CurrencyItem name={token.name} image={token.logo} />
               </div>

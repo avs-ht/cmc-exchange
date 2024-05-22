@@ -34,8 +34,8 @@ export const BankList = ({
   }, [changingProperty]);
 
   const bankCurrencyType = useCurrencyStore((state) => state.bankCurrencyType);
-  const bankCurrency = useCurrencyStore((state) => state.bankCurrency);
-  const setBankCurrency = useCurrencyStore((state) => state.setBankCurrency);
+  const fromCurrency = useCurrencyStore((state) => state.fromCurrency);
+  const setFromCurrency = useCurrencyStore((state) => state.setFromCurrency);
 
   const currency =
     changingProperty === "sending" ? fromMethods?.fiat : toMethods?.fiat;
@@ -56,7 +56,7 @@ export const BankList = ({
           {banks?.map((bank) => {
             const className = clsx(
               styles.listItem,
-              { [styles.active]: `${bankCurrency}` === `${bank.id}` },
+              { [styles.active]: `${fromCurrency}` === `${bank.id}` },
               []
             );
             return (
@@ -64,7 +64,7 @@ export const BankList = ({
                 <CurrencyItem name={bank.name} image={bank.logo} />
                 <button
                   className={styles.itemButton}
-                  onClick={() => setBankCurrency(String(bank.id))}
+                  onClick={() => setFromCurrency(String(bank.id))}
                 ></button>
               </div>
             );

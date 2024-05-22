@@ -2,21 +2,21 @@ import { create } from "zustand";
 
 interface CurrencyState {
   bankCurrencyType: string;
-  bankCurrency: string;
-  cryptoCurrency: string;
-
-  setBankCurrency: (currency: string) => void;
   setBankCurrencyType: (type: string) => void;
 
-  setCryptoCurrency: (currency: string) => void;
+  fromCurrency: string;
+  toCurrency: string;
+
+  setFromCurrency: (currency: string) => void;
+  setToCurrency: (currency: string) => void;
 }
 const useCurrencyStore = create<CurrencyState>((set) => ({
   bankCurrencyType: "all",
-  bankCurrency: "",
-  cryptoCurrency: "",
-  setBankCurrency: (currency: string) => set({ bankCurrency: currency }),
-  setCryptoCurrency: (currency: string) => set({ cryptoCurrency: currency }),
   setBankCurrencyType: (type: string) => set({ bankCurrencyType: type }),
+  fromCurrency: "",
+  toCurrency: "",
+  setFromCurrency: (currency: string) => set({ fromCurrency: currency }),
+  setToCurrency: (currency: string) => set({ toCurrency: currency }),
 }));
 
 export default useCurrencyStore;

@@ -51,13 +51,12 @@ export const UserForm = () => {
     queryFn: currencyAPI.getToValues,
     select: (data) => data.data.methods,
   });
-  const bankCurrency = useCurrencyStore((state) => state.bankCurrency);
-  const cryptoCurrency = useCurrencyStore((state) => state.cryptoCurrency);
+  const fromCurrency = useCurrencyStore((state) => state.fromCurrency);
+  const toCurrency = useCurrencyStore((state) => state.toCurrency);
 
   const chains =
-    toValues?.crypto.find(
-      (chain) => String(chain.id) === String(cryptoCurrency)
-    )?.chains || [];
+    toValues?.crypto.find((chain) => String(chain.id) === String(toCurrency))
+      ?.chains || [];
   const [error, setErrorCode] = useState<{ code: number; message: string }>({
     code: -1,
     message: "",
@@ -128,8 +127,8 @@ export const UserForm = () => {
       email: data.email,
       address: data.walletAddress,
       amount: amount,
-      payment_method: bankCurrency,
-      token: cryptoCurrency,
+      payment_method: fromCurrency,
+      token: toCurrency,
       chain: data.chain,
       item_id: itemId,
       price: bestPrice,
@@ -142,7 +141,7 @@ export const UserForm = () => {
     setChainDefaultValue(chains[0]?.name);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cryptoCurrency]);
+  }, [toCurrency]);
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmitHandler)}>
