@@ -13,6 +13,8 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './app/routes/__root'
+import { Route as IndexImport } from './app/routes/index'
+import { Route as OrderIndexImport } from './app/routes/order/index'
 import { Route as WidgetIdLayoutImport } from './app/routes/$widgetId/_layout'
 import { Route as WidgetIdLayoutIndexImport } from './app/routes/$widgetId/_layout/index'
 import { Route as WidgetIdLayoutOrderIndexImport } from './app/routes/$widgetId/_layout/order/index'
@@ -25,6 +27,16 @@ const WidgetIdImport = createFileRoute('/$widgetId')()
 
 const WidgetIdRoute = WidgetIdImport.update({
   path: '/$widgetId',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const IndexRoute = IndexImport.update({
+  path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const OrderIndexRoute = OrderIndexImport.update({
+  path: '/order/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -47,6 +59,10 @@ const WidgetIdLayoutOrderIndexRoute = WidgetIdLayoutOrderIndexImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
     '/$widgetId': {
       preLoaderRoute: typeof WidgetIdImport
       parentRoute: typeof rootRoute
@@ -54,6 +70,10 @@ declare module '@tanstack/react-router' {
     '/$widgetId/_layout': {
       preLoaderRoute: typeof WidgetIdLayoutImport
       parentRoute: typeof WidgetIdRoute
+    }
+    '/order/': {
+      preLoaderRoute: typeof OrderIndexImport
+      parentRoute: typeof rootRoute
     }
     '/$widgetId/_layout/': {
       preLoaderRoute: typeof WidgetIdLayoutIndexImport
@@ -69,12 +89,14 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren([
+  IndexRoute,
   WidgetIdRoute.addChildren([
     WidgetIdLayoutRoute.addChildren([
       WidgetIdLayoutIndexRoute,
       WidgetIdLayoutOrderIndexRoute,
     ]),
   ]),
+  OrderIndexRoute,
 ])
 
 /* prettier-ignore-end */

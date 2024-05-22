@@ -11,21 +11,9 @@ interface Props {
 
 export const ChooseButtons = ({ changingProperty, currencyType }: Props) => {
   const setFromType = useExchangeSettings((state) => state.setFromType);
-  const setBankCurrency = useCurrencyStore((state) => state.setBankCurrency);
-  const setBankCurrencyType = useCurrencyStore(
-    (state) => state.setBankCurrencyType
-  );
-  const setCryptoCurrency = useCurrencyStore(
-    (state) => state.setCryptoCurrency
-  );
-  const setNewCurrencyType = useCallback((currencyType: "bank" | "crypto") => {
-    const secondType = currencyType === "bank" ? "crypto" : "bank";
-    if (changingProperty === "sending") {
-      setFromType(currencyType);
-    } else if (changingProperty === "getting") {
-      setFromType(secondType);
-    }
-  }, []);
+  const setToType = useExchangeSettings((state) => state.setToType);
+  const setFromCurrency = useCurrencyStore((state) => state.setBankCurrency);
+  const setToCurrency = useCurrencyStore((state) => state.setCryptoCurrency);
 
   const isCrypto = currencyType === "crypto";
   const bankClassName = clsx(
@@ -38,11 +26,17 @@ export const ChooseButtons = ({ changingProperty, currencyType }: Props) => {
     { [styles.active]: isCrypto },
     []
   );
-  const resetCurrency = useCallback(() => {
-    setBankCurrency("");
-    setCryptoCurrency("");
-    setBankCurrencyType("all");
+
+  const setCurrency = useCallback((currency: "bank" | "crypto") => {
+    if (changingProperty === "sending") {
+      setFromType(currency);
+      setFromCurrency("");
+    } else {
+      setToType(currency);
+      setToCurrency("");
+    }
   }, []);
+
   return (
     <>
       <div className={styles.chooseCurrency}>
@@ -50,8 +44,7 @@ export const ChooseButtons = ({ changingProperty, currencyType }: Props) => {
           className={bankClassName}
           disabled={!isCrypto}
           onClick={() => {
-            setNewCurrencyType("bank");
-            resetCurrency();
+            setCurrency("bank");
           }}
         >
           Валюта
@@ -60,8 +53,7 @@ export const ChooseButtons = ({ changingProperty, currencyType }: Props) => {
           disabled={isCrypto}
           className={cryptoClassName}
           onClick={() => {
-            setNewCurrencyType("crypto");
-            resetCurrency();
+            setCurrency("crypto");
           }}
         >
           Криптовалюта
